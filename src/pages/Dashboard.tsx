@@ -3,9 +3,14 @@ import React, { useEffect, useState } from 'react';
 import './Home.css';
 import { useSelector } from 'react-redux';
 import {logoutUser} from '../firebaseConfig'
-import { useHistory } from 'react-router';
-import { informationCircle, map, personCircle, calendar } from 'ionicons/icons';
+import { useHistory, Route, Redirect } from 'react-router';
+import { informationCircle, map, personCircle, calendar, heart } from 'ionicons/icons';
 import { IonReactRouter } from '@ionic/react-router';
+import Welcome from './Welcome';
+import Home from './Home';
+import Login from './Login';
+import Register from './Register';
+import Complain from './Complain';
 
 
 
@@ -33,6 +38,8 @@ const Dashboard: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding">
       <IonLoading message="Logging out.." duration={0} isOpen={busy}/>
+
+
         <p>Hello {username}</p>
         <IonButton onClick={logout}>Logout</IonButton>
       </IonContent>

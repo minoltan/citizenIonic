@@ -1,13 +1,14 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonText, IonAvatar, IonLabel, IonItemOption, IonItemSliding, IonItemOptions, IonButton, IonIcon, IonInput, IonLoading } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonText, IonAvatar, IonLabel, IonItemOption, IonItemSliding, IonItemOptions, IonButton, IonIcon, IonInput, IonLoading, IonGrid, IonRow, IonCol, IonCheckbox, IonImg, IonRouterLink } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import ExploreContainer from '../components/ExploreContainer';
-import './Home.css';
+import './login.css';
 import { star } from 'ionicons/icons'
 import { loginUser } from '../firebaseConfig'
 import { presentToast } from '../toast';
 import { setUserState } from '../redux/actions';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 
 
@@ -42,25 +43,47 @@ const Login: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Citizen</IonTitle>
+          <IonTitle className="title">Login</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonLoading message="Please wait..." duration={0} isOpen={busy}/>
-      <IonContent className="ion-padding">
-          <IonInput value={input} onIonChange={(e: any) => setInput(e.target.value)}></IonInput>
+      <IonContent className="ion-padding background">
+        <div className="content">
+
+
+        <IonImg src="/assets/images/login.png" />
+         
+          {/* <IonInput value={input} onIonChange={(e: any) => setInput(e.target.value)}></IonInput> */}
 
           <IonInput 
             placeholder="Username?" 
+            className = "input"
             onIonChange = {(e: any) => setUsername(e.target.value)}/>
           <IonInput 
             type = "password"
             placeholder="Password?"
+            className = "input"
             onIonChange = {(e: any) => setPassword(e.target.value)}/>
+          
+          
+          <IonButton  fill= "clear"  expand="full" onClick={login} className="login" > Login </IonButton>
 
-        <IonButton color="secondary" onClick={login} > Login
-        <IonIcon slot="start" icon={star}></IonIcon>
-        </IonButton>
-        <IonButton color="success"  routerLink="/register"> Register </IonButton>
+          <IonRow>
+            <IonCol size= "" className="test">
+            <IonRouterLink href="#" class="link">Forgot Password?</IonRouterLink>
+            </IonCol>
+          </IonRow>
+
+          
+
+             <div className="link">
+                <p>Already have an account? <Link to="/login">Login</Link></p>
+             </div>
+         
+         
+         </div> 
+
+         
       </IonContent>
     </IonPage>
   );

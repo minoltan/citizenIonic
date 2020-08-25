@@ -7,7 +7,9 @@ import Complain from './pages/Complain';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import {getCurrentUser} from './firebaseConfig'
+import Welcome from './pages/Welcome';
+import {getCurrentUser} from './firebaseConfig';
+import './pages/app.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -37,15 +39,16 @@ const RoutingSystem: React.FC = () => {
     <IonReactRouter>
       <IonTabs>
       <IonRouterOutlet>
+        <Route path="/welcome" component={Welcome} exact={true} />
         <Route path="/home" component={Home} exact={true} />
         <Route path="/dashboard" component={Dashboard} exact={true} />
         <Route path="/complain" component={Complain} exact={true} />
         <Route path="/login" component={Login} exact={true} />
         <Route path="/register" component={Register} exact={true} />
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
+        <Route exact path="/" render={() => <Redirect to="/welcome" />} />
       </IonRouterOutlet>
       
-      <IonTabBar slot="bottom">
+      <IonTabBar slot="bottom" >
       <IonTabButton tab="schedule" href="/dashboard">
         <IonIcon icon={calendar} />
         <IonLabel>Schedule</IonLabel>
@@ -56,11 +59,6 @@ const RoutingSystem: React.FC = () => {
         <IonIcon icon={heart} />
         <IonLabel>Speakers</IonLabel>
       </IonTabButton>
-
-      {/* <IonTabButton tab="map">
-        <IonIcon icon={map} />
-        <IonLabel>Map</IonLabel>
-      </IonTabButton> */}
 
       <IonTabButton tab="about" href="/dashboard">
         <IonIcon icon={informationCircle} />
@@ -83,7 +81,7 @@ const App: React.FC = () => {
        dispatch(setUserState(user.email))
        window.history.replaceState({},'', '/dashboard')
      }else{
-      window.history.replaceState({}, '', '/login')
+      window.history.replaceState({}, '', '/welcome')
      }
      setBusy(false)
    })
