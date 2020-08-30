@@ -14,6 +14,59 @@ const config = {
 
 firebase.initializeApp(config)
 
+const db= firebase.database()
+
+
+export function getNews(){
+    return new Promise((resolve, reject) => {
+
+        const NewsData =db.ref('/news/id-0001').once('value').then(function(snapshot) {
+            var newsList = snapshot.val() 
+                console.log(newsList);
+                return newsList;
+                
+          });
+
+        if(NewsData) {    
+            resolve(NewsData)
+              
+        }else {
+            resolve(null)
+        }
+        console.log(NewsData);
+        
+    })
+}
+
+
+export function getData(){
+    return new Promise((resolve, reject) => {
+
+        const testData1 =db.ref('/test').once('value').then(function(snapshot) {
+            var username = snapshot.val() 
+                console.log(username);
+                return username;
+                
+          });
+           
+        // const testData = db.ref("/test").on("value", function(snapshot) {
+        //     var test1 = snapshot.val();
+        //     console.log(test1);
+        //     return test1;
+        //   },);  
+
+        if(testData1) {    
+            resolve(testData1)
+            
+           
+        }else {
+            resolve(null)
+        }
+        console.log(testData1);
+        
+    })
+}
+
 export function getCurrentUser() {
     return new Promise((resolve, reject) => {
         const unsubscribe = firebase.auth().onAuthStateChanged(function(user){

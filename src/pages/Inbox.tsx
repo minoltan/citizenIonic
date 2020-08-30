@@ -24,8 +24,9 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonCardContent,
-  IonText,
-  IonImg,
+  IonItemSliding,
+  IonItemOptions,
+  IonItemOption,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import "./Home.css";
@@ -53,49 +54,33 @@ import {
 } from "ionicons/icons";
 import { IonReactRouter } from "@ionic/react-router";
 import Welcome from "./Welcome";
-import Home from "./Home";
-import Login from "./Login";
-import Register from "./Register";
-import Complain from "./Complain";
 import { menuController } from "@ionic/core";
 import { Link } from "react-router-dom";
 
-const Dashboard: React.FC = () => {
+const Inbox: React.FC = () => {
   const username = useSelector((state: any) => state.user.username);
-  const newsList = useSelector((state: any) => state.newsData.title);
-  const name = useSelector((state: any) => state.testData.name);
   const history = useHistory();
   const [busy, setBusy] = useState<boolean>(false);
-
-  // const arr = [
-  //   {
-  //     name: 'abc'
-  //   },
-  //   {
-  //     name: 'poe'
-  //   }
-  // ]
 
   async function logout() {
     setBusy(true);
     await logoutUser();
     setBusy(false);
-    history.replace("/welcome");
+    history.replace("/login");
   }
 
   async function openMenu() {
     console.log("menu");
     // await menuController.open();
-    menuController.enable(true, "first");
-    menuController.open("first");
-    console.log(name)
+    menuController.enable(true, "first2");
+    menuController.open("first2");
   }
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle className="title">Newsfeed</IonTitle>
+          <IonTitle className="title">Inbox</IonTitle>
           <IonButtons slot="start">
             <IonIcon
               icon={menu}
@@ -110,21 +95,15 @@ const Dashboard: React.FC = () => {
         <IonLoading message="Logging out.." duration={0} isOpen={busy} />
 
         <p>Hello {username}</p>
-         <p>Hi{name}</p>
         {/* <IonButton onClick={logout}>Logout</IonButton> */}
 
-        <IonMenu side="start" menuId="first" contentId="first">
-          {/* <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>Menu</IonTitle>
-        </IonToolbar>
-      </IonHeader> */}
+        <IonMenu side="start" menuId="first2" contentId="first2">
           <IonContent>
             <IonList>
               <IonItem>
                 <IonIcon icon={personOutline} className="icon" /> Profile
               </IonItem>
-             
+
               <IonItem>
                 <IonIcon icon={settingsOutline} className="icon" />
                 Settings
@@ -143,46 +122,66 @@ const Dashboard: React.FC = () => {
           </IonContent>
         </IonMenu>
 
-        <IonRouterOutlet id="first"></IonRouterOutlet>
-
-        <IonCard>
-        <IonItem>
-          <IonText color="medium" slot="end">02/08/2020</IonText>
-          <IonCardHeader className="title1">
-            <IonCardSubtitle>Electricity</IonCardSubtitle>
-            {/* {newsList.map((elem: any)=> (
-            <p key={elem.title}>Test {elem.title}</p>
-            ))} */}
-            
-            <h5>Power Failure Today </h5>
+        <IonRouterOutlet id="first2"></IonRouterOutlet>
+        <IonCard style={{'height': '80%'}}>
+          <IonCardHeader>
+            <IonCardSubtitle>Inbox</IonCardSubtitle>
+            {/* <IonCardTitle>Card Title </IonCardTitle> */}
           </IonCardHeader>
+          <IonItemSliding>
+          <IonItem>
+            <IonLabel>Item</IonLabel>
           </IonItem>
-          <IonImg src="https://firebasestorage.googleapis.com/v0/b/hotel-agape.appspot.com/o/assets%2Froom%2Fimg-16.jpg?alt=media&token=57140b77-9f0f-45fc-949a-eaa904fe5bca" />
-          <IonCardContent>
-            Keep close to Nature's heart... and break clear away, once in awhile,
-            and climb a mountain or spend a week in the woods. Wash your spirit clean.
-         </IonCardContent>
-        </IonCard>
-
-        <IonCard>
-        <IonItem>
-          <IonText color="medium" slot="end">02/08/2020</IonText>
-          <IonCardHeader className="title1">
-            <IonCardSubtitle>Electricity</IonCardSubtitle>
-            <h5>Power Failure Today </h5>
-          </IonCardHeader>
+          <IonItemOptions side="end">
+            <IonItemOption color="danger" onClick={() => {}}>Delete</IonItemOption>
+          </IonItemOptions>
+        </IonItemSliding>
+        <IonItemSliding>
+          <IonItem>
+            <IonLabel>Item</IonLabel>
           </IonItem>
-          <IonImg src="https://firebasestorage.googleapis.com/v0/b/hotel-agape.appspot.com/o/assets%2Froom%2Fimg-16.jpg?alt=media&token=57140b77-9f0f-45fc-949a-eaa904fe5bca" />
-          <IonCardContent>
-            Keep close to Nature's heart... and break clear away, once in awhile,
-            and climb a mountain or spend a week in the woods. Wash your spirit clean.
-         </IonCardContent>
+          <IonItemOptions side="end">
+            <IonItemOption onClick={() => {}}>Delete</IonItemOption>
+          </IonItemOptions>
+        </IonItemSliding>
+        <IonItemSliding>
+          <IonItem>
+            <IonLabel>Item</IonLabel>
+          </IonItem>
+          <IonItemOptions side="end">
+            <IonItemOption onClick={() => {}}>Delete</IonItemOption>
+          </IonItemOptions>
+        </IonItemSliding>
+        <IonItemSliding>
+          <IonItem>
+            <IonLabel>Item</IonLabel>
+          </IonItem>
+          <IonItemOptions side="end">
+            <IonItemOption onClick={() => {}}>Delete</IonItemOption>
+          </IonItemOptions>
+        </IonItemSliding>
+        <IonItemSliding>
+          <IonItem>
+            <IonLabel>Item</IonLabel>
+          </IonItem>
+          <IonItemOptions side="end">
+            <IonItemOption onClick={() => {}}>Delete</IonItemOption>
+          </IonItemOptions>
+        </IonItemSliding>
+        <IonItemSliding>
+          <IonItem>
+            <IonLabel>Item</IonLabel>
+          </IonItem>
+          <IonItemOptions side="end">
+            <IonItemOption onClick={() => {}}>Delete</IonItemOption>
+          </IonItemOptions>
+        </IonItemSliding>
+     
+         
         </IonCard>
-
-
        </IonContent>
     </IonPage>
   );
 };
 
-export default Dashboard;
+export default Inbox;

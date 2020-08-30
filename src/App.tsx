@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonSpinner, IonTabBar, IonTabButton, IonIcon, IonLabel, IonBadge, IonTabs } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonSpinner, IonTabBar, IonTabButton, 
+  IonIcon, IonLabel, IonBadge, IonTabs } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Complain from './pages/Complain';
@@ -8,7 +9,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Welcome from './pages/Welcome';
-import {getCurrentUser} from './firebaseConfig';
+import Inbox from './pages/Inbox';
+import {getCurrentUser, getData, getNews} from './firebaseConfig';
 import './pages/app.css';
 
 /* Core CSS required for Ionic components to work properly */
@@ -31,10 +33,15 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import { useDispatch } from 'react-redux';
-import { setUserState } from './redux/actions';
-import { calendar, personCircle, map, informationCircle, heart } from 'ionicons/icons';
+import { setUserState, setTestDataState } from './redux/actions';
+import { calendar, personCircle, map, informationCircle, heart, newspaperOutline, navigateOutline, bookOutline, mailOutline } from 'ionicons/icons';
+import Rules from './pages/Rules';
+
+
+
 
 const RoutingSystem: React.FC = () => {
+
   return (
     <IonReactRouter>
       <IonTabs>
@@ -43,26 +50,34 @@ const RoutingSystem: React.FC = () => {
         <Route path="/home" component={Home} exact={true} />
         <Route path="/dashboard" component={Dashboard} exact={true} />
         <Route path="/complain" component={Complain} exact={true} />
+        <Route path="/rules" component={Rules} exact={true} />
+        <Route path="/inbox" component={Inbox} exact={true} />
         <Route path="/login" component={Login} exact={true} />
         <Route path="/register" component={Register} exact={true} />
         <Route exact path="/" render={() => <Redirect to="/welcome" />} />
       </IonRouterOutlet>
-      
+   
       <IonTabBar slot="bottom" >
       <IonTabButton tab="schedule" href="/dashboard">
-        <IonIcon icon={calendar} />
-        <IonLabel>Schedule</IonLabel>
+        <IonIcon icon={newspaperOutline} />
+        <IonLabel>Newsfeed</IonLabel>
         <IonBadge>6</IonBadge>
       </IonTabButton>
 
-      <IonTabButton tab="heart" href="/dashboard">
-        <IonIcon icon={heart} />
-        <IonLabel>Speakers</IonLabel>
+      <IonTabButton tab="heart" href="/complain">
+        <IonIcon icon={navigateOutline} />
+        <IonLabel>Complain</IonLabel>
       </IonTabButton>
 
-      <IonTabButton tab="about" href="/dashboard">
-        <IonIcon icon={informationCircle} />
-        <IonLabel>About</IonLabel>
+      <IonTabButton tab="inbox" href="/inbox">
+        <IonIcon icon={mailOutline} />
+        <IonLabel>Inbox</IonLabel>
+        <IonBadge>3</IonBadge>
+      </IonTabButton>
+
+      <IonTabButton tab="about" href="/rules">
+        <IonIcon icon={bookOutline} />
+        <IonLabel>Laws</IonLabel>
       </IonTabButton>
     </IonTabBar>
    
@@ -72,6 +87,7 @@ const RoutingSystem: React.FC = () => {
 }
 
 const App: React.FC = () => {
+  
   const [busy, setBusy] = useState(true)
   const dispatch = useDispatch()
   useEffect(() => {
@@ -86,8 +102,25 @@ const App: React.FC = () => {
      setBusy(false)
    })
   }, [])
+
+  useEffect(() => {
+    getData().then((testData: any) => {
+      const test = testData
+      dispatch(setTestDataState(test))
+      
+    })
+   }, [])
+
+   useEffect(() => {
+    getNews().then((newsData: any) => {
+      const newsList = newsData
+      dispatch(setTestDataState(newsList))
+      console.log(newsList);
+      
+    })
+   }, [])
   return (
-  <IonApp> {busy ? <IonSpinner/> : <RoutingSystem/>}
+  <IonApp> {busy ? <IonSpinner /> : <RoutingSystem/>}
     
     {/* <IonReactRouter>
       <IonRouterOutlet>

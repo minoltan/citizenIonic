@@ -57,12 +57,12 @@ const Login: React.FC = () => {
 
           <IonInput 
             placeholder="Username?" 
-            className = "input"
+            className = "input ion-padding"
             onIonChange = {(e: any) => setUsername(e.target.value)}/>
           <IonInput 
             type = "password"
             placeholder="Password?"
-            className = "input"
+            className = "input ion-padding "
             onIonChange = {(e: any) => setPassword(e.target.value)}/>
           
           
@@ -74,11 +74,13 @@ const Login: React.FC = () => {
             </IonCol>
           </IonRow>
 
-          
 
-             <div className="link">
-                <p>Already have an account? <Link to="/login">Login</Link></p>
-             </div>
+          <IonRow>
+            <IonCol size= "" className="test">
+            <p className="link">New Here? <Link to="/register">Register</Link></p>
+            </IonCol>
+          </IonRow>
+  
          
          
          </div> 

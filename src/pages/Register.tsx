@@ -50,22 +50,22 @@ const Register: React.FC = () => {
           <IonInput value={input} onIonChange={(e: any) => setInput(e.target.value)}></IonInput>
 
           <IonInput 
-            className = "input"
+            className = "input ion-padding"
             placeholder="Username?" 
             onIonChange = {(e: any) => setUsername(e.target.value)}/>
           <IonInput
-            className = "input"
+            className = "input ion-padding"
             type = "password"
             placeholder="Password?"
             onIonChange = {(e: any) => setPassword(e.target.value)}/>
           <IonInput 
-            className = "input"
+            className = "input ion-padding"
             type = "password"
             placeholder="Confirm Password?"
             onIonChange = {(e: any) => setConfirmPassword(e.target.value)}/>
 
         <IonButton className="login" fill= "clear"  expand="full" onClick={RegisterUser} > Register</IonButton>
-        <p className="link">Already have an account? <Link to="/login">Login</Link></p>
+        <p className="link ion-padding">Already have an account? <Link to="/login">Login</Link></p>
     
       </IonContent>
     </IonPage>
