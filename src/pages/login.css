@@ -1,5 +1,7 @@
+
+
 .background{
-    /* background-color:  #a04eff; */
+    background-color:  #F5F6F8;
 
     --background:url() 0 0/100% no-repeat;
 }
@@ -16,24 +18,77 @@
 
 .input{
     /* background-color: #a04eff; */
-    border-radius: 10px;
-    border: #a04eff solid 1px;
+    border-radius: 6px;
+    /* border: #a04eff solid 1px; */
+    background: #FFFFFF;
     padding: 10px;
     margin-bottom: 12px;
     
 }
 
-.login{
+.buttons{
     border-radius: 6px;
-    background-color: #a04eff;
-    border: #a04eff solid 2px;
+    /* background-color: #22C674 !important; */
+    background-color:  #00beaa !important;
+    /* border: #a04eff solid 2px; */
+    color:#FFFFFF;
+}
+
+.tab-bar{
+    /* background-color: #22C674 !important; */
+    background-color: #00beaa !important;
+    color:#FFFFFF;
+}
+
+.badge{
+    background-color:  #727473 ;
+    border: white;
+}
+
+.register{
+    border:  #00beaa solid 1px;
+    border-radius: 6px;
+    /* color:  #22C674; */
+    color:  #00beaa;
+    margin-top:10px;
+
+}
+
+.small-button{
+    width: auto;
+    height: 24px;
+    border: #3F44511F solid 1px;
+    border-radius: 6px;
+    color: #868DAA;
+    background-color: white;
+
+}
+
+/* .small-button:active{
+    color: #00beaa;
+} */
+
+.small-button:hover{
+    background-color:  #00beaa;
     color: white;
 }
 
 
+
+.small-button-active {
+    width: auto;
+    height: 24px;
+    /* border: #3F44511F solid 1px; */
+    border-radius: 6px;
+    color:white;
+    /* background-color: #22C674 ; */
+    background-color: #00beaa ;
+}
+
 .link {
     padding-top: 20spx;
-    color:#a04eff;
+    color:#000000;
+    font-style: Poppins;
   }
 
 .test{
@@ -42,17 +97,12 @@
   }
 
 .title{
-    background-color: #a04eff;
+    /* background-color: #a04eff; */
     color: white;
     font-weight: 1000;
 }
 
-.register{
-    border: #a04eff solid 1px;
-    border-radius: 5px;
-    color: #a04eff;
-    margin-top:10px;
-}
+
 
 .image{
     height: 100px;
@@ -65,4 +115,24 @@
 
 .ionpad{
     padding-top:30px;
+}
+
+.complaint{
+    text-align: center;
+   
+}
+
+.comHead{
+    text-align: center;
+    color: #7a7a7a;
+}
+
+.iconColor{
+    color: rgb(83, 83, 83);
+}
+
+.align{
+    align-items: center;
+    justify-content: center;
+    display: block;
 }

@@ -6,12 +6,7 @@ import {
   IonToolbar,
   IonList,
   IonItem,
-  IonText,
-  IonAvatar,
   IonLabel,
-  IonItemOption,
-  IonItemSliding,
-  IonItemOptions,
   IonButton,
   IonIcon,
   IonInput,
@@ -21,51 +16,50 @@ import {
   IonRouterOutlet,
   IonCard,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonCardContent,
   IonSelect,
   IonSelectOption,
   IonTextarea,
   IonImg,
-  IonFab,
-  IonFabButton,
-  IonBadge,
+  IonFab, IonGrid, IonRow, IonRouterLink, IonSpinner
 } from "@ionic/react";
 import React, { useEffect, useState, useRef } from "react";
-import ExploreContainer from "../components/ExploreContainer";
-import "./Home.css";
 import "./login.css";
 import {
-  star,
   menu,
   personOutline,
   settingsOutline,
   exitOutline,
   informationCircle,
-  text,
-  add,
-  bookOutline,
-  mailOutline,
+  add, mailOutline
 } from "ionicons/icons";
 import { menuController } from "@ionic/core";
-import { logoutUser } from "../firebaseConfig";
+import { logoutUser, postComplain } from "../firebaseConfig";
 import { useHistory } from "react-router";
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 
 
 import { Plugins, CameraResultType } from '@capacitor/core';
+import { useSelector } from "react-redux";
+import { presentToast } from "../toast";
+import { Link } from "react-router-dom";
+import ImageUploader from 'react-images-upload';
+
+
 const { Camera } = Plugins;
 
 const Complain: React.FC = () => {
-  const [input, setInput] = useState<string>("");
+  const [input] = useState<string>("");
   const history = useHistory();
   const [busy, setBusy] = useState<boolean>(false);
-  const [gender, setGender] = useState("");
-  const [text, setText] = useState("");
-  const [file, setFile] = useState("");
-  const [photo, setPhoto] = useState("");
-  const fileInput = useRef(null);
+  const [busy1, setBusy1] = useState<boolean>(false);
+  const [type, setType] = useState('');
+  const [text, setText] = useState('');
+  const [] = useState('');
+  const [photo] = useState('');
+  const [title,setTitle] = useState('') 
+  const userId  = useSelector((state: any) => state.user.userId)
+  const [file, setFile] = useState('');
 
   useEffect(() => {
     console.log(input);
@@ -92,18 +86,30 @@ const Complain: React.FC = () => {
     resultType: CameraResultType.Uri
     });
 
-    var imageUrl = image.webPath;
 // Can be set to the src of an image now
 // setState({
 // photo: imageUrl
 // })
 }
 
+function onDrop(picture:any) {
+  setFile(picture[0]);
+}
+
+async function postComplaint() {
+  setBusy1(true);
+  const res = await postComplain(userId,title, type, text, file);
+  if(res) {
+    presentToast('Complain send Successfully')
+    // history.push('/dashboard')
+}
+// setBusy1(true);
+}
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle className="title">Complain</IonTitle>
+       <IonHeader>
+        <IonToolbar className="background">
+          <IonTitle className="">Complain</IonTitle>
           <IonButtons slot="start">
             <IonIcon
               icon={menu}
@@ -117,30 +123,17 @@ const Complain: React.FC = () => {
       <IonContent>
         <IonLoading message="Logging out.." duration={0} isOpen={busy} />
 
-        <IonInput
-          value={input}
-          onIonChange={(e: any) => setInput(e.target.value)}
-        ></IonInput>
-        {/* <IonButton color="secondary" className="ion-padding">
-          {" "}
-          Hello World
-          <IonIcon slot="start" icon={star}></IonIcon>
-        </IonButton>
-        <IonButton color="success" className="ion-padding" routerLink="/home">
-          {" "}
-          Click Me{" "}
-        </IonButton> */}
-
         <IonMenu side="start" menuId="first1" contentId="first1">
-          <IonContent>
+        <IonContent>
             <IonList>
               <IonItem>
-                <IonIcon icon={personOutline} className="icon" /> Profile
+                <IonIcon icon={personOutline} className="icon" /> 
+                <Link to="/profile">Profile</Link>
               </IonItem>
-            
               <IonItem>
-                <IonIcon icon={settingsOutline} className="icon" />
-                Settings
+                <IonIcon icon={mailOutline} className="icon" />
+                {/* <IonRouterLink href="/viewComplaints" class="link">View complaints</IonRouterLink> */}
+                <Link to="/viewComplaints">View complaints</Link>
               </IonItem>
               <IonItem>
                 <IonIcon icon={exitOutline} className="icon" />
@@ -149,81 +142,108 @@ const Complain: React.FC = () => {
                 </IonButton>
               </IonItem>
               <IonItem>
-                {" "}
-                <IonIcon icon={informationCircle} className="icon" /> About
-              </IonItem>
+                  <IonIcon icon={informationCircle} className="icon" /> 
+                  <Link to="/about">About</Link>
+                </IonItem>
             </IonList>
           </IonContent>
         </IonMenu>
         <IonRouterOutlet id="first1"></IonRouterOutlet>
 
-        <IonCard>
+          {/* <IonGrid>
+              <IonRow  style={{'height':'100px' , 'background-color':'#f5f5f5','padding': '0px' } }>
+                <IonCol>
+                  <h5 className="comHead">Complaints</h5> 
+                  <h2 className="complaint">16</h2>
+                </IonCol>
+                <IonCol>
+                <h5 className="comHead">Success</h5> 
+                  <h2 className="complaint">13</h2>
+                  </IonCol>
+                  <IonCol>
+                  <h5 className="comHead">Pendings</h5> 
+                  <h2 className="complaint">03</h2>
+                  </IonCol>
+              </IonRow>
+            </IonGrid> */}
+
+        <IonCard style={{'margin-top': '0px', 'margin-left':'0px', 'margin-right':'0px'}}>
           <IonCardHeader>
-            {/* <IonCardSubtitle>Card Subtitle</IonCardSubtitle> */}
-            <IonCardTitle>Make Complain </IonCardTitle>
+            <IonCardTitle>Post Complain </IonCardTitle>
           </IonCardHeader>
 
           <IonCardContent>
-            <IonInput
-              placeholder="Title"
-              className="input ion-padding"
-            ></IonInput>
 
-            <IonItem className="input">
-              <IonLabel>Type</IonLabel>
+          <IonGrid>
+            <IonRow>
+             <IonLabel style={{'font-size': '16px'}}>Title</IonLabel>
+            </IonRow>
+            <IonRow>
+              <IonInput
+                placeholder="Enter your title here..."
+                className="input ion-padding"
+                style={{'background-color': '#FAFAFA', 'border-radius': '6px'}}
+                onIonChange = {(e: any) => setTitle(e.target.value)}
+              ></IonInput>
+            </IonRow>
+         
+          </IonGrid>
+         
+
+          <IonLabel style={{'font-size': '16px'}}>Type</IonLabel>
+            <IonItem className="input" style={{'background-color': '#FAFAFA', 'border-radius': '6px'}}>
+              <IonLabel style={{'color': '#bfbfbf', 'font-size': '13px', 'font-weight': '2px'}}></IonLabel>
               <IonSelect
-                value={gender}
+                value={type}
                 placeholder="Select One"
-                onIonChange={(e: any) => setGender(e.target.value)}
+                onIonChange={(e: any) => setType(e.target.value)}
               >
-                <IonSelectOption value="female">Education</IonSelectOption>
-                <IonSelectOption value="male">Road Construction</IonSelectOption>
-                <IonSelectOption value="female">Medical</IonSelectOption>
-                <IonSelectOption value="male">Irrigation</IonSelectOption>
-                <IonSelectOption value="female">Electricity</IonSelectOption>
-                <IonSelectOption value="male">Other</IonSelectOption>
+                <IonSelectOption value="Education">Education</IonSelectOption>
+                <IonSelectOption value="Road Construction">Road Construction</IonSelectOption>
+                <IonSelectOption value="Medical">Medical</IonSelectOption>
+                <IonSelectOption value="Irrigation">Irrigation</IonSelectOption>
+                <IonSelectOption value="Electricity">Electricity</IonSelectOption>
+                <IonSelectOption value="Other">Other</IonSelectOption>
               </IonSelect>
             </IonItem>
 
+            <IonLabel style={{'font-size': '16px'}}>Description</IonLabel>
             <IonTextarea 
+            style={{'background-color': '#FAFAFA', 'border-radius': '6px', 'height': '53px'}}
             className="input "
-            placeholder="Detail..." value={text} 
+            placeholder="Please Provide Description..." value={text} 
             onIonChange={e => setText(e.detail.value!)}></IonTextarea>
 
-            {/* <IonInput
-              ref={(input: any) => (input !== null ? setFile(input) : null)}
-              // type="file"
-              hidden
-              accept="image/*"
-              onClick={() => {
-                console.log('onClick');
-              }}
-            />
-              <IonButton
-               color="primary"
-               onClick={() => {
-                 // @ts-ignore
-                 fileInput?.current?.click();
-                 // setBackgroundOption(BackgroundOptionType.Gradient);
-                 }}>
-                 Image
-                </IonButton> */}
 
-              <div className="input">
-                <IonImg className="image" src={photo} ></IonImg>
+              <IonLabel style={{'font-size': '16px'}}>Image</IonLabel>
+              <ImageUploader  
+            buttonText='Choose an image'
+            onChange={onDrop}
+            withPreview={true}
+            singleImage={true}
+            withIcon={false}
+            withLabel={false}
+            imgExtension={['.jpg', '.gif', '.png', '.gif']}
+            maxFileSize={5242880}
+          />
+              {/* <div className="input">
+                <IonImg className="image ion-padding" 
+                 style={{'background-color': '#FAFAFA', 'border-radius': '6px'}}
+                src="https://firebasestorage.googleapis.com/v0/b/citizenionic.appspot.com/o/electricity%2Felectricity1.jpg?alt=media&token=191c8610-35ec-49a7-a039-2007c3b9e894" ></IonImg>
                 <IonFab color="primary" horizontal="center" slot="fixed">
-                <IonButton  onClick={() => takePicture()}>
-                <IonIcon className="login" icon={add} />
+                <IonButton fill="clear" className="add" onClick={() => takePicture()}>
+                <IonIcon className="buttons" icon={add} />
                 </IonButton>
                 </IonFab>
-              </div>
+              </div> */}
 
               <div className="ionpad">
-              <IonButton  fill= "clear"  expand="full"  className="login" > Submit </IonButton>
+              <IonButton  fill= "clear"  expand="full"  className="buttons" onClick={postComplaint} >
+                {/* {busy1 ?  <IonSpinner />: ''} */}
+             
+              <IonLoading message="Sending.." duration={1000} isOpen={busy1} /> Submit </IonButton>
               </div>
             
-          
-
           </IonCardContent>
         </IonCard>
 

@@ -40,16 +40,16 @@ const Welcome: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      {/* <IonHeader>
         <IonToolbar>
           <IonTitle className="title">Wecome Citizen!</IonTitle>
         </IonToolbar>
-      </IonHeader>
+      </IonHeader> */}
       <IonLoading message="Please wait..." duration={0} isOpen={busy}/>
       <IonContent className="ion-padding background">
       <IonImg src="/assets/images/citizen.png" />
         <div className="content">   
-         <IonButton  className="login" fill = 'clear' expand='full'  routerLink="/login"><b>Login</b></IonButton>
+         <IonButton  className="buttons" fill = 'clear' expand='full'  routerLink="/login"><b>Login</b></IonButton>
          <IonButton className="register" fill = 'clear' expand='full' routerLink="/register"><b>Register</b></IonButton>
         </div>
          

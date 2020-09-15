@@ -6,75 +6,46 @@ import {
   IonToolbar,
   IonLoading,
   IonButton,
-  IonTabs,
-  IonTabBar,
-  IonTabButton,
   IonIcon,
-  IonLabel,
-  IonBadge,
   IonRouterOutlet,
   IonMenu,
   IonList,
   IonItem,
   IonButtons,
-  IonMenuButton,
-  IonAvatar,
   IonCard,
   IonCardHeader,
   IonCardSubtitle,
-  IonCardTitle,
   IonCardContent,
   IonText,
-  IonImg,
+  IonImg, IonRefresher, IonRefresherContent, IonRouterLink
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
-import "./Home.css";
-import { useSelector } from "react-redux";
-import { logoutUser } from "../firebaseConfig";
-import { useHistory, Route, Redirect } from "react-router";
+import React, { useState } from "react";
+import "./login.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getFilterNews, logoutUser } from "../firebaseConfig";
+import { useHistory } from "react-router";
 import {
   informationCircle,
-  map,
-  personCircle,
-  calendar,
-  heart,
   menu,
-  settings,
   exitOutline,
-  alertCircleOutline,
   personOutline,
-  settingsOutline,
-  walk,
-  warning,
-  wine,
-  wifi,
-  pin,
-  mailOutline,
+  settingsOutline, chevronDownCircleOutline, mailOutline
 } from "ionicons/icons";
-import { IonReactRouter } from "@ionic/react-router";
-import Welcome from "./Welcome";
-import Home from "./Home";
-import Login from "./Login";
-import Register from "./Register";
-import Complain from "./Complain";
+
 import { menuController } from "@ionic/core";
+import { RefresherEventDetail } from '@ionic/core';
 import { Link } from "react-router-dom";
+import { setFilterNewsDataState } from "../redux/actions";
 
 const Dashboard: React.FC = () => {
   const username = useSelector((state: any) => state.user.username);
-  const newsList = useSelector((state: any) => state.newsData.title);
+  const newsList = useSelector((state: any) => state.newsData.title1);
+  const filterNewsList = useSelector((state: any) => state.filterNewsData.title);
   const name = useSelector((state: any) => state.testData.name);
   const history = useHistory();
   const [busy, setBusy] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
-  // const arr = [
-  //   {
-  //     name: 'abc'
-  //   },
-  //   {
-  //     name: 'poe'
-  //   }
-  // ]
 
   async function logout() {
     setBusy(true);
@@ -83,19 +54,47 @@ const Dashboard: React.FC = () => {
     history.replace("/welcome");
   }
 
+  const test1 = [
+    {a: "aaa"},
+    {a: "bbb"}
+  ]
+
   async function openMenu() {
     console.log("menu");
+    console.log(history.location.pathname);
+    
     // await menuController.open();
     menuController.enable(true, "first");
     menuController.open("first");
-    console.log(name)
+    console.log(newsList);
+    console.log(test1);
+    
   }
+
+  async function smallBtnClick(type: string) {
+    
+    getFilterNews(type).then((filterNewsData: any) => {
+      const filterNewsList = filterNewsData
+      console.log(filterNewsList);
+      dispatch(setFilterNewsDataState(filterNewsList))     
+    })
+  }
+
+  async function doRefresh(event: CustomEvent<RefresherEventDetail>) {
+    console.log('Begin async operation');
+  
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.detail.complete();
+    }, 2000);
+  }
+
 
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle className="title">Newsfeed</IonTitle>
+        <IonToolbar className="background">
+          <IonTitle className="">Newsfeed</IonTitle>
           <IonButtons slot="start">
             <IonIcon
               icon={menu}
@@ -109,25 +108,23 @@ const Dashboard: React.FC = () => {
       <IonContent className="ion-padding">
         <IonLoading message="Logging out.." duration={0} isOpen={busy} />
 
-        <p>Hello {username}</p>
-         <p>Hi{name}</p>
-        {/* <IonButton onClick={logout}>Logout</IonButton> */}
+        {/* <p>Hello {username}</p>
+         <p>Hi{name}</p> */}
+       
+
+       
 
         <IonMenu side="start" menuId="first" contentId="first">
-          {/* <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>Menu</IonTitle>
-        </IonToolbar>
-      </IonHeader> */}
           <IonContent>
             <IonList>
               <IonItem>
-                <IonIcon icon={personOutline} className="icon" /> Profile
+                <IonIcon icon={personOutline} className="icon" /> 
+                <Link to="/profile">Profile</Link>
               </IonItem>
-             
               <IonItem>
-                <IonIcon icon={settingsOutline} className="icon" />
-                Settings
+                <IonIcon icon={mailOutline} className="icon" />
+                {/* <IonRouterLink href="/viewComplaints" class="link">View complaints</IonRouterLink> */}
+                <Link to="/viewComplaints">View complaints</Link>
               </IonItem>
               <IonItem>
                 <IonIcon icon={exitOutline} className="icon" />
@@ -136,49 +133,46 @@ const Dashboard: React.FC = () => {
                 </IonButton>
               </IonItem>
               <IonItem>
-                {" "}
-                <IonIcon icon={informationCircle} className="icon" /> About
-              </IonItem>
+                  <IonIcon icon={informationCircle} className="icon" /> 
+                  <Link to="/about">About</Link>
+                </IonItem>
             </IonList>
           </IonContent>
         </IonMenu>
 
         <IonRouterOutlet id="first"></IonRouterOutlet>
 
-        <IonCard>
-        <IonItem>
-          <IonText color="medium" slot="end">02/08/2020</IonText>
-          <IonCardHeader className="title1">
-            <IonCardSubtitle>Electricity</IonCardSubtitle>
-            {/* {newsList.map((elem: any)=> (
-            <p key={elem.title}>Test {elem.title}</p>
-            ))} */}
-            
-            <h5>Power Failure Today </h5>
-          </IonCardHeader>
-          </IonItem>
-          <IonImg src="https://firebasestorage.googleapis.com/v0/b/hotel-agape.appspot.com/o/assets%2Froom%2Fimg-16.jpg?alt=media&token=57140b77-9f0f-45fc-949a-eaa904fe5bca" />
-          <IonCardContent>
-            Keep close to Nature's heart... and break clear away, once in awhile,
-            and climb a mountain or spend a week in the woods. Wash your spirit clean.
-         </IonCardContent>
-        </IonCard>
+        {/* <IonButton fill="clear"  onClick={() => smallBtnClick("a")} className="small-button hover">All</IonButton> */}
+        <IonButton fill="clear"  onClick={()=>smallBtnClick("Electricity")} className="small-button">Electricity</IonButton>
+        <IonButton fill="clear" onClick={()=>smallBtnClick("Road")} className="small-button">Road</IonButton>
+        <IonButton fill="clear" onClick={()=>smallBtnClick("Water")} className="small-button">Water</IonButton>
+        <IonButton fill="clear" onClick={()=>smallBtnClick("Education")} className="small-button">Education</IonButton>
+      
+        {filterNewsList !== undefined && filterNewsList.map((object:any)=>(
+           <IonCard>
+           <IonItem>
+             <IonText color="medium" slot="end">02/08/2020</IonText>
+             <IonCardHeader className="title1">
+        <IonCardSubtitle>{object.type}</IonCardSubtitle>
+               <h5>{object.title}</h5>
+             </IonCardHeader>
+             </IonItem>
+             <IonImg src={object.image} />
+             <IonCardContent>
+              {object.description}
+            </IonCardContent>
+           </IonCard>
+        ))}
+    
 
-        <IonCard>
-        <IonItem>
-          <IonText color="medium" slot="end">02/08/2020</IonText>
-          <IonCardHeader className="title1">
-            <IonCardSubtitle>Electricity</IonCardSubtitle>
-            <h5>Power Failure Today </h5>
-          </IonCardHeader>
-          </IonItem>
-          <IonImg src="https://firebasestorage.googleapis.com/v0/b/hotel-agape.appspot.com/o/assets%2Froom%2Fimg-16.jpg?alt=media&token=57140b77-9f0f-45fc-949a-eaa904fe5bca" />
-          <IonCardContent>
-            Keep close to Nature's heart... and break clear away, once in awhile,
-            and climb a mountain or spend a week in the woods. Wash your spirit clean.
-         </IonCardContent>
-        </IonCard>
-
+    <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
+        <IonRefresherContent
+          pullingIcon={chevronDownCircleOutline}
+          pullingText="Pull to Load"
+          refreshingSpinner="circles"
+          refreshingText="Loading...">
+        </IonRefresherContent>
+      </IonRefresher>
 
        </IonContent>
     </IonPage>

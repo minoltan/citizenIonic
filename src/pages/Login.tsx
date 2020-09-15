@@ -5,7 +5,7 @@ import './login.css';
 import { star } from 'ionicons/icons'
 import { loginUser } from '../firebaseConfig'
 import { presentToast } from '../toast';
-import { setUserState } from '../redux/actions';
+import { setLoggedIn, setUserState } from '../redux/actions';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -21,6 +21,7 @@ const Login: React.FC = () => {
     const [input,setInput] = useState<string>('')
     const [username,setUsername] = useState('') 
     const [password,setPassword] = useState('') 
+    // const [isLoggedIn, setLoggedIn] = useState<boolean>(false)
 
     useEffect( () => {
         console.log(input)
@@ -30,7 +31,11 @@ const Login: React.FC = () => {
      setBusy(true)
       const res: any  = await loginUser(username, password)
       console.log(`${res ? 'Login success' : 'Login failed'}`)
+
+
+
       if(res){
+        dispatch(setLoggedIn(true))
         dispatch(setUserState(res.user.email))
         history.replace('/dashboard')
         presentToast('You have Logged in!')
@@ -41,11 +46,11 @@ const Login: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      {/* <IonHeader>
         <IonToolbar>
           <IonTitle className="title">Login</IonTitle>
         </IonToolbar>
-      </IonHeader>
+      </IonHeader> */}
       <IonLoading message="Please wait..." duration={0} isOpen={busy}/>
       <IonContent className="ion-padding background">
         <div className="content">
@@ -66,7 +71,7 @@ const Login: React.FC = () => {
             onIonChange = {(e: any) => setPassword(e.target.value)}/>
           
           
-          <IonButton  fill= "clear"  expand="full" onClick={login} className="login" > Login </IonButton>
+          <IonButton  fill= "clear"  expand="full" onClick={login} className="buttons" > Login </IonButton>
 
           <IonRow>
             <IonCol size= "" className="test">

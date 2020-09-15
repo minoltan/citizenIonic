@@ -17,15 +17,57 @@ firebase.initializeApp(config)
 const db= firebase.database()
 
 
+export async function postComplain(userId: string, title: string, type: string, text: string, image: string){
+    let Complain = {
+        userId: 'test',
+        title: title,
+        type: type,
+        description : text,
+        image: image
+    }
+    db.ref('complain').push(Complain);
+      return true;
+}
+
+// ref.once('value', function(snapshot) {
+//     snapshot.forEach(function(childSnapshot) {
+//       var childKey = childSnapshot.key;
+//       var childData = childSnapshot.val();
+//       // ...
+//     });
+//   });
+
+
 export function getNews(){
     return new Promise((resolve, reject) => {
 
-        const NewsData =db.ref('/news/id-0001').once('value').then(function(snapshot) {
+
+        // const NewsData = db.ref('/complain/').once('value', function(snapshot) {
+        //     snapshot.forEach(function(childSnapshot) {
+        //       var childKey = childSnapshot.key;
+        //       var childData = childSnapshot.val();
+        //       console.log(childData);
+              
+        //       return childData;
+        //       // ...
+        //     });
+        //   });
+        //   console.log(NewsData);
+
+        const NewsData =db.ref('/news/').once('value').then(function(snapshot) {
+        //    var newsList = snapshot.forEach(function(childSnapshot){
+        //         var childKey = childSnapshot.key;
+        //         var childData = childSnapshot.val();
+        //     })
             var newsList = snapshot.val() 
                 console.log(newsList);
-                return newsList;
-                
-          });
+                const test = Object.values(newsList)
+                console.log(test);
+                return test;
+               
+            });
+
+          console.log(NewsData);
 
         if(NewsData) {    
             resolve(NewsData)
@@ -34,17 +76,44 @@ export function getNews(){
             resolve(null)
         }
         console.log(NewsData);
-        
+    
+        return NewsData;
     })
 }
 
+export function getFilterNews(type: string){
+    return new Promise((resolve, reject) => {
+
+        const NewsData =db.ref('/news/').orderByChild("type").equalTo(type).once('value').then(function(snapshot) {
+       
+            var newsList = snapshot.val()
+                console.log(newsList);
+                const test = Object.values(newsList)
+                console.log(test);
+                return test;
+               
+            });
+
+          console.log(NewsData);
+
+        if(NewsData) {    
+            resolve(NewsData)
+              
+        }else {
+            resolve(null)
+        }
+        console.log(NewsData);
+    
+        return NewsData;
+    })
+}
 
 export function getData(){
     return new Promise((resolve, reject) => {
 
         const testData1 =db.ref('/test').once('value').then(function(snapshot) {
             var username = snapshot.val() 
-                console.log(username);
+                // console.log(username);
                 return username;
                 
           });
@@ -62,7 +131,7 @@ export function getData(){
         }else {
             resolve(null)
         }
-        console.log(testData1);
+        // console.log(testData1);
         
     })
 }

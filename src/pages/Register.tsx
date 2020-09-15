@@ -2,7 +2,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem,
 import React, { useEffect, useState } from 'react';
 import ExploreContainer from '../components/ExploreContainer';
 import { star } from 'ionicons/icons'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { presentToast } from '../toast';
 import {registerUser} from '../firebaseConfig';
 import './login.css';
@@ -15,6 +15,7 @@ const Register: React.FC = () => {
     const [username,setUsername] = useState('') 
     const [password,setPassword] = useState('') 
     const [confirmPassword,setConfirmPassword] = useState('') 
+    const history  = useHistory()
 
     useEffect( () => {
         console.log(input)
@@ -32,19 +33,20 @@ const Register: React.FC = () => {
       const res = await registerUser(username, password)
       if(res) {
           presentToast('You have registered successfully!')
+          history.replace('/login')
       }
       setBusy(false)
     }
 
   return (
     <IonPage>
-      <IonHeader>
+      {/* <IonHeader>
         <IonToolbar>
           <IonTitle className="title">Register</IonTitle>
         </IonToolbar>
-      </IonHeader>
+      </IonHeader> */}
       <IonLoading message="Registration in progress!" duration={0} isOpen={busy}/>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding background">
       <IonImg src="/assets/images/register.png" />
 
           <IonInput value={input} onIonChange={(e: any) => setInput(e.target.value)}></IonInput>
@@ -64,7 +66,7 @@ const Register: React.FC = () => {
             placeholder="Confirm Password?"
             onIonChange = {(e: any) => setConfirmPassword(e.target.value)}/>
 
-        <IonButton className="login" fill= "clear"  expand="full" onClick={RegisterUser} > Register</IonButton>
+        <IonButton className="buttons" fill= "clear"  expand="full" onClick={RegisterUser} > Register</IonButton>
         <p className="link ion-padding">Already have an account? <Link to="/login">Login</Link></p>
     
       </IonContent>
